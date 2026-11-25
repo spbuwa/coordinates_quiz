@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Quizzes on latitude and longitude: read the coordinates, name the continent and hemispheres.">
+<title>Pin the Planet: Quizzes on Coordinates</title>
+<style>
+:root{--paper:#eaf1ec;--ink:#12333a;--muted:#4a6b70;--line:#a9c2bd;--sea:#d4e5e1;--block:#12333a;--block-text:#e6f0ea;--pin:#f2bf2b;--btn:#2347c5;--btn-text:#fff;
+--serif:"Palatino Linotype",Palatino,"Book Antiqua","URW Palladio L",Georgia,serif;--sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+@media (prefers-color-scheme:dark){:root{--paper:#0e1d22;--ink:#e4eee8;--muted:#9bb5b4;--line:#2f4e55;--sea:#14303a;--block:#16363f;--btn:#7d97ff;--btn-text:#0b1430}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--paper);color:var(--ink);font:1.05rem/1.65 var(--sans)}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--pin);outline-offset:3px}
+.wrap{max-width:62rem;margin:0 auto;padding:0 1.25rem}
+h1,h2,h3{font-family:var(--serif);line-height:1.1;margin:0}
+
+/* hero */
+.hero{position:relative;overflow:hidden;border-bottom:2px solid var(--ink)}
+.hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:44px 44px;-webkit-mask-image:linear-gradient(#000 55%,transparent);mask-image:linear-gradient(#000 55%,transparent)}
+.hero .wrap{position:relative;display:grid;gap:2rem;grid-template-columns:1.3fr 1fr;align-items:center;padding-top:3.5rem;padding-bottom:3.5rem}
+.hero h1{font-size:clamp(3.2rem,10vw,6.6rem);letter-spacing:-.025em}
+.hero p.lead{font-size:1.25rem;max-width:30rem;margin:1.2rem 0 1.8rem}
+.jump{display:flex;gap:.8rem;flex-wrap:wrap}
+.btn{display:inline-block;background:var(--btn);color:var(--btn-text);text-decoration:none;font-weight:600;padding:.7rem 1.3rem;border-radius:6px}
+.btn.alt{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
+.btn:hover{filter:brightness(1.1)}
+.globe{width:min(100%,21rem);justify-self:center}
+.globe text{font:11px var(--sans);fill:var(--ink);paint-order:stroke;stroke:var(--sea);stroke-width:3px}
+
+/* sections */
+section{padding:3.5rem 0}
+h2{font-size:clamp(1.9rem,4.5vw,2.8rem);margin-bottom:1rem}
+.intro{max-width:40rem}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin:2rem 0}
+.pair h3{font-size:1.5rem;margin-bottom:.4rem}
+.pair p{margin:.3rem 0}
+.pair .fact{color:var(--muted)}
+
+/* hemisphere chart */
+.chart{background:var(--block);color:var(--block-text);border-radius:10px;padding:1.5rem;margin:2.5rem 0}
+.chart h3{font-size:1.6rem;margin-bottom:.3rem}
+.chart>p{margin:.2rem 0 1.2rem;max-width:38rem}
+.grid{display:grid;grid-template-columns:5.5rem 1fr 1fr;gap:2px;background:rgba(230,240,234,.35)}
+.grid>*{background:var(--block);padding:.9rem}
+.grid .h{font-weight:600;display:flex;align-items:center;font-size:.95rem}
+.grid .cell b{display:block;font-family:var(--serif);font-size:1.25rem;margin-bottom:.15rem}
+.grid .cell span{display:block;font-size:.95rem}
+.grid .cell i{display:block;font-style:normal;color:var(--pin);margin-top:.4rem;font-size:.95rem;font-variant-numeric:tabular-nums}
+
+.read{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+.example{border-left:4px solid var(--pin);padding:.2rem 0 .2rem 1.2rem}
+.example .coord{font-family:var(--serif);font-size:1.7rem;font-weight:700}
+.example p{margin:.4rem 0}
+.read ul{margin:0;padding-left:1.2rem}
+.read li{margin-bottom:.6rem}
+
+/* quiz list */
+#quizzes{border-top:2px solid var(--ink)}
+.quiz{display:grid;grid-template-columns:13rem 1fr auto;gap:1.5rem;align-items:center;padding:1.6rem 0;border-bottom:1px solid var(--line)}
+.stamp{font-family:var(--serif);font-size:1.35rem;font-weight:700;font-variant-numeric:tabular-nums;border:2px solid var(--ink);border-radius:6px;padding:.6rem .8rem;text-align:center;background:var(--sea)}
+.quiz h3{font-size:1.5rem;margin-bottom:.3rem}
+.quiz p{margin:0;color:var(--muted);max-width:34rem}
+.quiz.soon .stamp{border-style:dashed;background:transparent;color:var(--muted)}
+.quiz.soon h3{color:var(--muted)}
+.note{margin-top:1.2rem;color:var(--muted);font-size:.95rem}
+footer{border-top:2px solid var(--ink);padding:1.6rem 0 2.2rem;color:var(--muted);font-size:.95rem}
+
+@media (max-width:760px){
+  .hero .wrap,.pair,.read{grid-template-columns:1fr}
+  .quiz{grid-template-columns:1fr;gap:.9rem}
+  .quiz .btn{justify-self:start}
+  .stamp{justify-self:start}
+  .grid{grid-template-columns:4.2rem 1fr 1fr}
+  .grid>*{padding:.65rem}
+  .grid .h{font-size:.85rem}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <h1>Pin the Planet</h1>
+      <p class="lead">Quizzes on latitude and longitude. Read the numbers, then name the continent, the hemispheres and the place.</p>
+      <div class="jump">
+        <a class="btn" href="#quizzes">Pick a quiz</a>
+        <a class="btn alt" href="#guide">How coordinates work</a>
+      </div>
+    </div>
+    <svg class="globe" viewBox="0 0 280 280" role="img" aria-label="A globe showing the Equator, the Prime Meridian and a pin in the Northern and Eastern Hemispheres">
+      <defs><clipPath id="c"><circle cx="140" cy="140" r="120"/></clipPath></defs>
+      <circle cx="140" cy="140" r="120" fill="var(--sea)"/>
+      <g clip-path="url(#c)" fill="none" stroke="var(--ink)" stroke-width="1" opacity=".55">
+        <line x1="20" x2="260" y1="80" y2="80"/><line x1="20" x2="260" y1="200" y2="200"/>
+        <line x1="20" x2="260" y1="36" y2="36"/><line x1="20" x2="260" y1="244" y2="244"/>
+        <ellipse cx="140" cy="140" rx="60" ry="120"/><ellipse cx="140" cy="140" rx="104" ry="120"/>
+      </g>
+      <g stroke="var(--ink)" stroke-width="2.5" fill="none">
+        <line x1="20" x2="260" y1="140" y2="140"/><line x1="140" x2="140" y1="20" y2="260"/>
+      </g>
+      <circle cx="140" cy="140" r="120" fill="none" stroke="var(--ink)" stroke-width="2.5"/>
+      <text x="30" y="134">Equator</text>
+      <text x="148" y="222">Prime Meridian</text>
+      <circle cx="200" cy="80" r="15" fill="none" stroke="var(--pin)" stroke-width="3"/>
+      <circle cx="200" cy="80" r="7" fill="var(--pin)" stroke="var(--ink)" stroke-width="2"/>
+    </svg>
+  </div>
+</header>
+
+<main>
+<section id="guide">
+  <div class="wrap">
+    <h2>How coordinates work</h2>
+    <p class="intro">Every place on Earth has an address made of two numbers. The first says how far north or south it is. The second says how far east or west. Together they pin the place down to a point on the map.</p>
+
+    <div class="pair">
+      <div>
+        <h3>Latitude</h3>
+        <p>Measures distance north or south of the Equator, the imaginary line around the middle of the Earth.</p>
+        <p class="fact">Runs from 0° at the Equator to +90° at the North Pole and −90° at the South Pole. Lines of latitude run east to west.</p>
+      </div>
+      <div>
+        <h3>Longitude</h3>
+        <p>Measures distance east or west of the Prime Meridian, the line that passes through Greenwich in London.</p>
+        <p class="fact">Runs from 0° at the Prime Meridian to +180° eastward and −180° westward, meeting in the Pacific Ocean. Lines of longitude run north to south.</p>
+      </div>
+    </div>
+
+    <div class="chart">
+      <h3>The sign tells you the side</h3>
+      <p>The quizzes write coordinates with plus and minus signs. Plus means north or east. Minus means south or west. Use this chart to turn the signs into hemispheres.</p>
+      <div class="grid">
+        <div></div><div class="h">West (negative longitude)</div><div class="h">East (positive longitude)</div>
+        <div class="h">North (positive latitude)</div>
+        <div class="cell"><b>Northern and Western</b><span>Latitude +, longitude −</span><i>New York +40.71°, −74.01°</i></div>
+        <div class="cell"><b>Northern and Eastern</b><span>Latitude +, longitude +</span><i>Mumbai +19.08°, +72.88°</i></div>
+        <div class="h">South (negative latitude)</div>
+        <div class="cell"><b>Southern and Western</b><span>Latitude −, longitude −</span><i>São Paulo −23.55°, −46.63°</i></div>
+        <div class="cell"><b>Southern and Eastern</b><span>Latitude −, longitude +</span><i>Sydney −33.87°, +151.21°</i></div>
+      </div>
+    </div>
+
+    <div class="read">
+      <div class="example">
+        <div class="coord">+35.68°, +139.69°</div>
+        <p>The first number is latitude. It is positive, so the place is north of the Equator.</p>
+        <p>The second number is longitude. It is positive, so the place is east of the Prime Meridian.</p>
+        <p>That makes the Northern and Eastern Hemispheres. On the map, it is Tokyo, in Asia.</p>
+      </div>
+      <ul>
+        <li>Latitude always comes first, then longitude.</li>
+        <li>Maps often use letters instead of signs. 40.71° N, 74.01° W is the same place as +40.71°, −74.01°.</li>
+        <li>Numbers close to 0 mean the place is near the Equator or the Prime Meridian. Check the sign carefully there.</li>
+        <li>A continent can lie in more than one hemisphere. Africa, for example, spans both north and south.</li>
+        <li>At the poles, longitude stops mattering, because every meridian meets there.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="quizzes">
+  <div class="wrap">
+    <h2>Pick a quiz</h2>
+    <p class="intro">Each quiz has ten questions. Choose the continent and hemispheres for the coordinates, then read the explanation after every answer.</p>
+
+    <div class="quiz">
+      <div class="stamp">+19.08°, +72.88°</div>
+      <div>
+        <h3>Quiz 1: Cities around the world</h3>
+        <p>Ten well-known cities on six continents. A good place to start if signed coordinates are new to you.</p>
+      </div>
+      <a class="btn" href="https://spbuwa.github.io/coordinates_quiz/">Start Quiz 1</a>
+    </div>
+
+    <div class="quiz">
+      <div class="stamp">+5.60°, −0.19°</div>
+      <div>
+        <h3>Quiz 2: Tricky spots</h3>
+        <p>Ten new locations near the Equator, the Prime Meridian and the South Pole. Every answer links to Google Maps so you can see the exact spot.</p>
+      </div>
+      <a class="btn" href="https://spbuwa.github.io/coordinates_quiz/with_map.html">Start Quiz 2</a>
+    </div>
+
+    <div class="quiz soon">
+      <div class="stamp">?°, ?°</div>
+      <div>
+        <h3>More quizzes coming</h3>
+        <p>New sets of locations are on the way. Check back soon.</p>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">Pin the Planet is a growing set of quizzes on coordinates, hemispheres and continents.</div>
+</footer>
+
+</body>
+</html>

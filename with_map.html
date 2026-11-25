@@ -35,6 +35,8 @@ h1{font-size:1.3rem;margin:0 0 4px}
 </head>
 <body>
 <main>
+  <p style="margin:0 0 8px"><a class="back" href="index.html">← All quizzes</a></p>
+
 <h1>🧭 Coordinates Quiz 2</h1>
 <p class="sub">Name the continent and the hemispheres for each location.</p>
 <div class="bar"><i id="bar"></i></div>
@@ -73,7 +75,7 @@ function pick(k){
 function finish(){
   bar.style.width="100%";
   var m=score>=9?"Outstanding map skills!":score>=7?"Great work!":score>=5?"Good effort. Review the sign rules and try again.":"Keep practicing. Remember: + latitude is North, - is South; + longitude is East, - is West.";
-  card.innerHTML='<div class="meta">Your result</div><div class="score">'+score+' / '+Q.length+'</div><p>'+m+'</p><div class="row"><button class="btn" id="again">Try again</button></div>';
+  card.innerHTML='<div class="meta">Your result</div><div class="score">'+score+' / '+Q.length+'</div><p>'+m+'</p><div class="row"><button class="btn" id="again">Try again</button></div><a class="back" href="index.html">Back to all quizzes</a></div>';
   document.getElementById("again").onclick=function(){i=0;score=0;show()};
 }
 show();

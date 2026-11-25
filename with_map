@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Coordinates Quiz 2: Continent &amp; Hemisphere</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--text:#1d2330;--muted:#5d6678;--line:#d9dde5;--accent:#2563eb;--ok:#15803d;--okbg:#dcfce7;--bad:#b91c1c;--badbg:#fee2e2;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12151c;--card:#1b2030;--text:#e8ebf2;--muted:#9aa3b5;--line:#2e364a;--accent:#6ea0ff;--ok:#6ee7a0;--okbg:#12361f;--bad:#fca5a5;--badbg:#3b1717}}
+:root[data-theme="dark"]{--bg:#12151c;--card:#1b2030;--text:#e8ebf2;--muted:#9aa3b5;--line:#2e364a;--accent:#6ea0ff;--ok:#6ee7a0;--okbg:#12361f;--bad:#fca5a5;--badbg:#3b1717}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:640px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:1.3rem;margin:0 0 4px}
+.sub{color:var(--muted);margin:0 0 16px;font-size:.92rem}
+.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin-bottom:16px}
+.bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px}
+.meta{color:var(--muted);font-size:.85rem;margin-bottom:6px}
+.q{font-size:1.25rem;font-weight:600;margin:0 0 14px}
+.opt{display:block;width:100%;text-align:left;background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:8px;font:inherit;cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt:disabled{cursor:default}
+.opt.ok{background:var(--okbg);border-color:var(--ok);color:var(--ok)}
+.opt.bad{background:var(--badbg);border-color:var(--bad);color:var(--bad)}
+.row{display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:8px;padding:10px 18px;font:inherit;font-weight:600;cursor:pointer}
+.link{background:none;border:0;color:var(--accent);font:inherit;cursor:pointer;padding:0}
+.note{margin-top:12px;padding:10px 12px;border-radius:8px;background:var(--bg);border:1px solid var(--line);font-size:.94rem}
+.score{font-size:2.6rem;font-weight:700;margin:6px 0}
+.tip{color:var(--muted);font-size:.9rem}
+.note a{color:var(--accent);font-weight:600;display:inline-block;margin-top:6px}
+</style>
+</head>
+<body>
+<main>
+<h1>🧭 Coordinates Quiz 2</h1>
+<p class="sub">Name the continent and the hemispheres for each location.</p>
+<div class="bar"><i id="bar"></i></div>
+<div class="card" id="card"></div>
+<p class="tip" style="margin-top:14px">Tip: coordinates are listed as latitude, then longitude.</p>
+</main>
+<script>
+var Q=[["+30.04°, +31.24°", ["Asia; Northern and Eastern", "Africa; Northern and Eastern", "Africa; Northern and Western", "Africa; Southern and Eastern"], 1, "The Pyramids of Giza are nearby.", "Positive latitude means Northern; positive longitude means Eastern. This is Cairo, Egypt, in Africa."], ["-22.91°, -43.17°", ["South America; Southern and Eastern", "South America; Northern and Western", "Africa; Southern and Western", "South America; Southern and Western"], 3, "Christ the Redeemer overlooks this city.", "Negative latitude means Southern; negative longitude means Western. This is Rio de Janeiro, Brazil."], ["+55.76°, +37.62°", ["Europe; Northern and Eastern", "Asia; Northern and Eastern", "Europe; Northern and Western", "Europe; Southern and Eastern"], 0, "Red Square is in this city.", "Positive latitude means Northern; positive longitude means Eastern. This is Moscow, Russia, in the European part of the country."], ["-41.29°, +174.78°", ["Australia/Oceania; Southern and Western", "Australia/Oceania; Northern and Eastern", "Australia/Oceania; Southern and Eastern", "Asia; Southern and Eastern"], 2, "Capital of an island nation southeast of Australia.", "Negative latitude means Southern; positive longitude means Eastern. This is Wellington, New Zealand."], ["+64.15°, -21.94°", ["Europe; Northern and Eastern", "North America; Northern and Western", "Europe; Northern and Western", "Europe; Southern and Western"], 2, "The northernmost capital of any sovereign state.", "Positive latitude means Northern; negative longitude means Western. This is Reykjavik, Iceland, usually counted as part of Europe."], ["+1.35°, +103.82°", ["Asia; Southern and Eastern", "Asia; Northern and Eastern", "Asia; Northern and Western", "Australia/Oceania; Northern and Eastern"], 1, "A city-state just north of the Equator.", "+1.35° is just north of the Equator, so Northern; positive longitude means Eastern. This is Singapore, in Asia."], ["+61.22°, -149.90°", ["North America; Northern and Western", "North America; Northern and Eastern", "Asia; Northern and Western", "North America; Southern and Western"], 0, "The largest city in Alaska.", "Positive latitude means Northern; negative longitude means Western. This is Anchorage, Alaska, in North America."], ["+5.60°, -0.19°", ["Africa; Northern and Eastern", "Africa; Southern and Western", "Africa; Northern and Western", "South America; Northern and Western"], 2, "Close to where the Equator meets the Prime Meridian.", "Positive latitude means Northern; -0.19° is just west of the Prime Meridian, so Western. This is Accra, Ghana, in Africa."], ["-77.85°, +166.67°", ["Australia/Oceania", "Antarctica", "South America", "Africa"], 1, "The largest research station on the southernmost continent.", "A latitude this far south is within Antarctica. This is McMurdo Station."], ["-0.18°, -78.47°", ["South America; Northern and Western", "South America; Southern and Eastern", "South America; Southern and Western", "Africa; Southern and Western"], 2, "This capital sits almost exactly on the Equator.", "-0.18° is just south of the Equator, so Southern; negative longitude means Western. This is Quito, Ecuador."]];
+var i=0,score=0,done=false,card=document.getElementById("card"),bar=document.getElementById("bar");
+function mapUrl(t){var p=t.replace(/°/g,"").split(",");return "https://www.google.com/maps?q="+parseFloat(p[0])+","+parseFloat(p[1])}
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+function show(){
+  done=false;var q=Q[i];
+  bar.style.width=(i/Q.length*100)+"%";
+  var h='<div class="meta">Question '+(i+1)+' of '+Q.length+'</div><p class="q">'+esc(q[0])+'</p>';
+  q[1].forEach(function(o,k){h+='<button class="opt" data-k="'+k+'">'+esc(o)+'</button>'});
+  h+='<div class="row"><button class="link" id="hint">Show hint</button></div><div id="fb"></div>';
+  card.innerHTML=h;
+  card.querySelectorAll(".opt").forEach(function(b){b.onclick=function(){pick(+b.dataset.k)}});
+  document.getElementById("hint").onclick=function(){
+    var n=document.createElement("div");n.className="note";n.textContent="Hint: "+q[3];
+    this.replaceWith(n)};
+}
+function pick(k){
+  if(done)return;done=true;var q=Q[i],right=k===q[2];
+  if(right)score++;
+  card.querySelectorAll(".opt").forEach(function(b,n){
+    b.disabled=true;
+    if(n===q[2])b.classList.add("ok");
+    else if(n===k)b.classList.add("bad");
+  });
+  var last=i===Q.length-1;
+  document.getElementById("fb").innerHTML='<div class="note"><strong>'+(right?"Correct!":"Not quite.")+'</strong> '+esc(q[4])+'<br><a href="'+mapUrl(q[0])+'" target="_blank" rel="noopener noreferrer">📍 View on Google Maps</a></div><div class="row"><button class="btn" id="next">'+(last?"See results":"Next question")+'</button></div>';
+  document.getElementById("next").onclick=function(){last?finish():(i++,show())};
+}
+function finish(){
+  bar.style.width="100%";
+  var m=score>=9?"Outstanding map skills!":score>=7?"Great work!":score>=5?"Good effort. Review the sign rules and try again.":"Keep practicing. Remember: + latitude is North, - is South; + longitude is East, - is West.";
+  card.innerHTML='<div class="meta">Your result</div><div class="score">'+score+' / '+Q.length+'</div><p>'+m+'</p><div class="row"><button class="btn" id="again">Try again</button></div>';
+  document.getElementById("again").onclick=function(){i=0;score=0;show()};
+}
+show();
+</script>
+</body>
+</html>

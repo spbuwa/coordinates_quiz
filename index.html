@@ -82,7 +82,7 @@ function pick(k){
 function finish(){
   bar.style.width="100%";
   var m=score>=9?"Outstanding map skills!":score>=7?"Great work!":score>=5?"Good effort. Review the N/S and E/W rules and try again.":"Keep practicing. Latitude gives N/S, longitude gives E/W.";
-  card.innerHTML='<div class="meta">Your result</div><div class="score">'+score+' / '+Q.length+'</div><p>'+m+'</p><div class="row"><button class="btn" id="again">Try again</button></div>';
+  card.innerHTML='<div class="meta">Your result</div><div class="score">'+score+' / '+Q.length+'</div><p>'+m+'</p><div class="row"><button class="btn" id="again">Try again</button><a class="btn" href="quiz2.html">Next: Quiz 2 →</a></div>';
   document.getElementById("again").onclick=function(){i=0;score=0;show()};
 }
 show();
